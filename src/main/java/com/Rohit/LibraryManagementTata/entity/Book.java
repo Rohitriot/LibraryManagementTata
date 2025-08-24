@@ -1,36 +1,36 @@
 package com.Rohit.LibraryManagementTata.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
 import java.util.*;
 
-@Component
 @Entity(name = "book")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property="id")
 public class Book {
     @Id
     private int id;
     private String title;
     private String author;
     private int count;
-    private int libraryId;
+    @ManyToMany(mappedBy = "album",cascade = CascadeType.ALL)
+    @JsonIgnore
+    private Set<Library> libraries=new HashSet<>();
 
-//    public Book(int id, String title, String author, int count) {
-//        this.id = id;
-//        this.title = title;
-//        this.author = author;
-//        this.count = count;
-//    }
-
-    public Book(int id, String title, String author, int count, int libraryId) {
+    public Book(int id, String title, String author) {
         this.id = id;
         this.title = title;
         this.author = author;
-        this.count = count;
-        this.libraryId = libraryId;
     }
 
     public Book() {
+    }
+
+    public Set<Library> getLibraries() {
+        return libraries;
+    }
+
+    public void setLibraries(Set<Library> libraries) {
+        this.libraries = libraries;
     }
 
     public int getId() {
@@ -63,23 +63,5 @@ public class Book {
 
     public void setCount(int count) {
         this.count = count;
-    }
-
-    public int getLibraryId() {
-        return libraryId;
-    }
-
-    public void setLibraryId(int libraryId) {
-        this.libraryId = libraryId;
-    }
-
-    @Override
-    public String toString() {
-        return "Book{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", count=" + count +
-                '}';
     }
 }

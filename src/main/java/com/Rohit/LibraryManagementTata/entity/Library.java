@@ -1,24 +1,21 @@
 package com.Rohit.LibraryManagementTata.entity;
 
 import jakarta.persistence.*;
-import org.springframework.stereotype.Component;
-
 import java.util.*;
 
-@Component
 @Entity(name = "library")
+//@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property="libraryId")
 public class Library {
     @Id
     private int libraryId;
     private String libraryName;
     private String libCity;
 
-//    @OneToMany(cascade = CascadeType.PERSIST)
-    @ElementCollection
-//    @OneToMany(mappedBy = "library", cascade = CascadeType.PERSIST)
+    @ManyToMany
+//    @JsonIgnore
     private Set<Book> album = new HashSet<>();
 
-    public Library(String libraryName, int libraryId, String libCity)//, List<Book> album)
+    public Library(String libraryName, int libraryId, String libCity)
     {
         this.libraryName = libraryName;
         this.libraryId = libraryId;
@@ -53,7 +50,7 @@ public class Library {
     }
 
     public Set<Book> getAlbum() {
-        return album;
+        return this.album;
     }
 
     public void setAlbum(Set<Book> album) {
@@ -62,5 +59,6 @@ public class Library {
     public void setBookInAlbum(Book book)
     {
         album.add(book);
+        System.out.println("ADDED BOOK");
     }
 }

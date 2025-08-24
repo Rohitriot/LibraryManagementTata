@@ -7,30 +7,38 @@ import com.Rohit.LibraryManagementTata.service.LibService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class LibraryController {
     @Autowired
     LibService lservice;
+    @Autowired
+    BookService bservice;
+
 
     @GetMapping("/librarys")
-    public List<Library> getProducts() {
+    public List<Library> getLibrarys() {
         return lservice.getLibrary();
     }
 
-//    @GetMapping("/books/{bookId}")
-//    public Book getBooktById(@PathVariable int bookId) {
-//        return service.getBookById(bookId);
-//        return lservice.
-//    }
+    @GetMapping("/librarys/{libId}")
+    public Library getLibraryById(@PathVariable int libId) {
+        return lservice.getLibraryById(libId);
+    }
 
+    @PutMapping("/librarys/FeedBooks/{libID}/{bookID}/{bookCount}")
+    public void feedLibrary(@PathVariable("libID") int libID,@PathVariable("bookID") int bookID,@PathVariable("bookCount") int bookCount)
+    {
+        Book book=bservice.getBookById(bookID);
+        Library lib=lservice.getLibraryById(libID);
+        lservice.feedLibrary(lib,book,bookCount);
+    }
 
-    @PostMapping("/librarys")
+    @PostMapping(value = "/librarys")
     public void addLibrary(@RequestBody Library lib) {
         lservice.addLibrary(lib);
     }
+
 
 }
